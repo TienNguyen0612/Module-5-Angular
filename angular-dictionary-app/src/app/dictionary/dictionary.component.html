@@ -1,0 +1,8 @@
+<h2>English-Vietnamese Dictionary</h2>
+
+<input #inputValue type="text" (change)="search(inputValue.value)">
+
+<p *ngIf="word">
+  Nghĩa của từ {{word.key}}: {{word.meaning}}
+</p>
+
