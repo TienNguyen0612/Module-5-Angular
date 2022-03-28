@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms'
+import {FormGroup, FormControl, Validators, AbstractControl} from '@angular/forms'
 
 @Component({
   selector: 'app-register-form',
@@ -15,23 +15,35 @@ export class RegisterFormComponent implements OnInit {
     {id: 5, name: 'Canada'}
   ];
 
+  comparePassword(c: AbstractControl) {
+    const v = c.value;
+    return (v.password === v.confirmPassword) ?
+      null : {
+      passwordNotMatch: true
+      };
+  }
+
   contactForm = new FormGroup({
     firstname: new FormControl('', [Validators.required, Validators.minLength(10)]),
     lastname: new FormControl('', [Validators.required, Validators.minLength(9), Validators.pattern("^[a-zA-Z]+$")]),
     email: new FormControl('', [Validators.email, Validators.required]),
+    pwGroup: new FormGroup({
+      password: new FormControl(''),
+      confirmPassword: new FormControl('')
+      }, this.comparePassword),
     gender: new FormControl(),
     isMarried: new FormControl(),
     country: new FormControl(),
     address: new FormGroup({
       city: new FormControl(),
       street: new FormControl(),
-      pinCode: new FormControl(),
+      pinCode: new FormControl()
     })
   });
 
-  get firstname() {
-    return this.contactForm.get('firstname');
-  }
+  // get firstname() {
+  //   return this.contactForm.get('firstname');
+  // }
 
   get lastname() {
     return this.contactForm.get('lastname');
